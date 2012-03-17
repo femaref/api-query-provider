@@ -7,7 +7,7 @@ describe "ApiQueryProvider::Provider" do
     TestClass.api_url.should == "example.com"
     TestClass.api_path.should == "/foo/:id/id"
     
-    GithubCommits.api_url.should == "http://github.com/api/v2/json"
+    GithubCommits.api_url.should == "http://github.com/api/v2/json/"
     GithubCommits.api_path.should == "commits/list/:user_id/:repository/:branch"
   end
 end
