@@ -51,3 +51,6 @@ pkg
 *~
 
 .DS_Store
+
+.rvmrc
+.rspec
