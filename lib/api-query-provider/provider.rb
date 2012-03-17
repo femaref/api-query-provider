@@ -1,11 +1,9 @@
 module ApiQueryProvider
-  class Provider
-    cattr_accessor :api_url
-    cattr_accessor :api_path
-    
+  class Provider    
     attr_reader :where_constraints
     attr_reader :count_constraint
     attr_reader :select_fields
+    attr_reader :klass
     
     def initialize (base)    
       api_url = base.api_url
@@ -14,6 +12,7 @@ module ApiQueryProvider
         @where_constraints = {}
         @select_fields = []
         @count_constraint = 0
+        @klass = base
       else
         @where_constraints = base.where_constraints
         @select_fields = base.select_fields
@@ -43,7 +42,7 @@ module ApiQueryProvider
     end
     
     def replace_path
-      replaced_path = api_path
+      replaced_path = klass.api_path
       
       @where_constraints.each do |key, value|
         replaced_path.gsub! /:#{key}/, value.to_s
