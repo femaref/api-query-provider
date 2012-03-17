@@ -52,7 +52,16 @@ module ApiQueryProvider
     end
     
     def execute
+      begin
+        uri = URI.join(klass.api_url, self.replace_path)
+      rescue
+      end
       
+      response = HTTParty.get(uri.to_s)
+      
+      [klass.data_selector.call(JSON.parse(response.body))].flatten.map do |elem|
+        klass.send(:new, elem)
+      end
     end
     
     def self.interface
