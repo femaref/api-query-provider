@@ -1,5 +1,31 @@
 module ApiQueryProvider
-  class Provider    
+  class Provider
+    
+    def self.api_url
+      @api_url
+    end
+    
+    def self.api_url= (value)
+      @api_url = value
+    end
+    
+    def self.api_path
+      @api_path
+    end
+    
+    def self.api_path= (value)
+      @api_path = value
+    end
+    
+    def self.data_selector
+      @data_selector || Proc.new { |e| e }
+    end
+    
+    def self.data_selector= (value)
+      @data_selector = value
+    end
+  
+      
     attr_reader :where_constraints
     attr_reader :count_constraint
     attr_reader :select_fields
