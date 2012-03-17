@@ -1,4 +1,5 @@
 module ApiQueryProvider
+  # Provides method chaining support
   class Provider   
     attr_reader :where_constraints
     attr_reader :count_constraint
@@ -48,6 +49,10 @@ module ApiQueryProvider
       
       replaced_path.gsub! /:select/, @select_fields.join(",")
       replaced_path.gsub! /:count/, @count_constraint.to_s
+      
+      if replaced_path.contains?(":")
+        throw "you didn't replace all fields in the api_path"
+      end
       
       replaced_path
     end
