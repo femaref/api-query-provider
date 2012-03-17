@@ -67,7 +67,7 @@ module ApiQueryProvider
       response = HTTParty.get(uri.to_s)
       
       [klass.data_selector.call(JSON.parse(response.body))].flatten.map do |elem|
-        klass.send(:new, elem)
+        klass.new elem
       end
     end
     
