@@ -81,6 +81,7 @@ module ApiQueryProvider
       begin
         uri = URI.join(klass.api_url, self.replace_path)
       rescue
+        throw "invalid uri"
       end
       
       response = HTTParty.get(uri.to_s)
