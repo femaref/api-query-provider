@@ -1,31 +1,5 @@
 module ApiQueryProvider
-  class Provider
-    
-    def self.api_url
-      @api_url
-    end
-    
-    def self.api_url= (value)
-      @api_url = value
-    end
-    
-    def self.api_path
-      @api_path
-    end
-    
-    def self.api_path= (value)
-      @api_path = value
-    end
-    
-    def self.data_selector
-      @data_selector || Proc.new { |e| e }
-    end
-    
-    def self.data_selector= (value)
-      @data_selector = value
-    end
-  
-      
+  class Provider   
     attr_reader :where_constraints
     attr_reader :count_constraint
     attr_reader :select_fields
@@ -59,12 +33,10 @@ module ApiQueryProvider
       return self
     end
     
-    def self.where(opt = {})
-      interface.where(opt)
-    end
-    
-    def self.limit(count)
-      interface.limit(count)
+    def select(*fields)
+      @select_fields |= fields.flatten
+      
+      return self
     end
     
     def replace_path
@@ -73,6 +45,9 @@ module ApiQueryProvider
       @where_constraints.each do |key, value|
         replaced_path.gsub! /:#{key}/, value.to_s
       end
+      
+      replaced_path.gsub! /:select/, @select_fields.join(",")
+      replaced_path.gsub! /:count/, @count_constraint.to_s
       
       replaced_path
     end
