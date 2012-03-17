@@ -1,4 +1,3 @@
-require "rails/all"
 require "httparty"
 require "uri"
 require "json"
