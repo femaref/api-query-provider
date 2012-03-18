@@ -48,6 +48,10 @@ module ApiQueryProvider
       end
     
       data.each do |key, value|
+        if key.to_sym == :class
+          key = "class_"
+        end
+      
         if self.respond_to?("#{key}=".to_sym)
           self.send("#{key}=".to_sym, value)
         elsif self.class.autogenerate
