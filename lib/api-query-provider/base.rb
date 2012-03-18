@@ -52,16 +52,18 @@ module ApiQueryProvider
           key = "class_"
         end
       
-        if self.respond_to?("#{key}=".to_sym)
-          self.send("#{key}=".to_sym, value)
-        elsif self.class.autogenerate
-          self.class.class_eval do
-            attr_accessor key.to_sym
+        if !self.respond_to? key.to_sym
+          if self.class.autogenerate
+            self.class.class_eval do
+              attr_accessor key.to_sym
+            end
+          else
+            throw "field not found: #{key}. Either enable auto generation or add attr_accessor :#{key}"
           end
-        else
-          throw "field not found: #{key}. either enable auto generation or supply attr_accessors"
         end
+
         
+        self.send("#{key}=".to_sym, value)
       end
     end
     
