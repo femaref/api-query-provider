@@ -70,16 +70,20 @@ module ApiQueryProvider
       replaced_path
     end
     
-    def execute
+    def response
       begin
         uri = URI.join(klass.api_url, self.replace_path)
       rescue
         throw "invalid uri"
       end
       
-      response = HTTParty.get(uri.to_s)
+      HTTParty.get(uri.to_s)
+    end
+    
+    def execute
+      local_response = self.response
       
-      [klass.data_selector.call(JSON.parse(response.body))].flatten.map do |elem|
+      [klass.data_selector.call(JSON.parse(local_response.body))].flatten.map do |elem|
         klass.new elem
       end
     end
