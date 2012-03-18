@@ -30,6 +30,14 @@ module ApiQueryProvider
     def self.data_selector= (value)
       @data_selector = value
     end
+    
+    def self.autogenerate
+      @autogenerate || false
+    end
+    
+    def self.autogenerate= (value)
+      @autogenerate = value
+    end
      
     # basic parsing constructor
     # takes the json data and tries to assign it to +attr_accessor+ methods
@@ -40,7 +48,16 @@ module ApiQueryProvider
       end
     
       data.each do |key, value|
-        self.send("#{key}=".to_sym, value)
+        if self.respond_to?("#{key}=".to_sym)
+          self.send("#{key}=".to_sym, value)
+        elsif self.class.autogenerate
+          self.class.class_eval do
+            attr_accessor key.to_sym
+          end
+        else
+          throw "field not found: #{key}. either enable auto generation or supply attr_accessors"
+        end
+        
       end
     end
     
