@@ -1,5 +1,11 @@
 module ApiQueryProvider
   # Provides method chaining support
+  # replaces parameters in the api_path
+  # named parameters will be replaced by the assosicated value from where calls
+  # if a :where symbol is present in the string, any further values provided by where will be
+  # concatted to a key1=value,key2=value string and replaced there
+  # a value provided by limit will be replaced in to the :limit symbol
+  # if you can request additional fields or restrict the fields provided, place a :select symbol in the string
   class Provider   
     attr_reader :where_constraints
     attr_reader :count_constraint
@@ -43,14 +49,21 @@ module ApiQueryProvider
     def replace_path
       replaced_path = klass.api_path
       
+      used_keys = []
+      
       @where_constraints.each do |key, value|
         replaced_path.gsub! /:#{key}/, value.to_s
+        
+        used_keys << key
       end
       
-      replaced_path.gsub! /:select/, @select_fields.join(",")
-      replaced_path.gsub! /:count/, @count_constraint.to_s
+      @where_constraints.reject! { |key, value| used_keys.include? key }
       
-      if replaced_path.contains?(":")
+      replaced_path.gsub! /:where/, @where_constraints.to_a.map { |e| e.join("=") }.join(",")
+      replaced_path.gsub! /:select/, @select_fields.join(",")
+      replaced_path.gsub! /:limit/, @count_constraint.to_s
+      
+      if replaced_path.include?(":")
         throw "you didn't replace all fields in the api_path"
       end
       

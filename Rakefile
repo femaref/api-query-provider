@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "api-query-provider"
   gem.homepage = "http://github.com/Femaref/api-query-provider"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Provides an easy interface to arbitrary json apis}
+  gem.description = %Q{Provides an easy interface to arbitrary json apis}
   gem.email = "femaref@googlemail.com"
   gem.authors = ["Femaref"]
   # dependencies defined in Gemfile
