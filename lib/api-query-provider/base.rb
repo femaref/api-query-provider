@@ -88,7 +88,7 @@ module ApiQueryProvider
           end
         end
 
-        if self.class.customs.include? key.to_sym
+        if self.class.custom_fields.include? key.to_sym
           value = self.class.custom_fields[key.to_sym].call(value)
         end
         
