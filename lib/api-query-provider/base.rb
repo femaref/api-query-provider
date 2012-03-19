@@ -46,14 +46,14 @@ module ApiQueryProvider
       @autogenerate = value
     end
     
-    def self.custom(field, &block)
-      @customs ||= []
+    def self.custom_field(field, &block)
+      @custom_fields ||= []
       
-      @customs[field.to_sym] = block.to_proc
+      @custom_fields[field.to_sym] = block.to_proc
     end
     
-    def self.customs
-      @customs || []
+    def self.custom_fields
+      @custom_fields || []
     end
     
     def self.shadow(key)
@@ -89,7 +89,7 @@ module ApiQueryProvider
         end
 
         if self.class.customs.include? key.to_sym
-          value = self.class.customs[key.to_sym].call(value)
+          value = self.class.custom_fields[key.to_sym].call(value)
         end
         
         self.send("#{key}=".to_sym, value)
@@ -116,7 +116,9 @@ module ApiQueryProvider
       response = response.first
       
       response.provided_symbols do |sym|
-        self.send("#{self.class.shadow(sym)}=".to_sym, response.send("#{self.class.shadow(sym)}"))
+        shadow = self.class.shadow(sym)
+      
+        self.send("#{shadow}=".to_sym, response.send("#{shadow}"))
       end    
       
     end
