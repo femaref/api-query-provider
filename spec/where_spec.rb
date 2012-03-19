@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'lib/test_class'
+require 'lib/optional_where_test_class'
 
 describe "Where" do
   it "should merge the where_constraint hash" do
@@ -20,3 +21,12 @@ describe "Where" do
     real.replace_path.should == "/foo/1/id"
   end
 end
+
+describe OptionalWhereTestClass do
+  it "should replace optional :where symbol" do
+    real = OptionalWhereTestClass.where(:ref_id => 1, :ref_type => 2)
+    
+    real.replace_path.should == "/foo/?ref_id=1&ref_type=2"
+  end
+end
+
