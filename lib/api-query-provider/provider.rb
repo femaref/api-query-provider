@@ -91,5 +91,9 @@ module ApiQueryProvider
     def self.interface
       ApiQueryProvider::Provider.new(self)
     end
+    
+    def self.system_symbols
+      [ :where, :count, :select ]
+    end
   end
 end

@@ -26,6 +26,10 @@ module ApiQueryProvider
       @api_path = value
     end
     
+    def self.required_values
+      @api_path.scan(/:(\w+)/).flatten.map { |e| e.to_sym } - ApiQueryProvider::Provider.system_symbols
+    end
+    
     def self.data_selector
       @data_selector || Proc.new { |e| e }
     end
@@ -56,6 +60,8 @@ module ApiQueryProvider
       key.to_sym == :class ? "class_".to_sym : key
     end
     
+    attr_reader :provided_symbols
+    
      
     # basic parsing constructor
     # takes the json data and tries to assign it to +attr_accessor+ methods
@@ -64,8 +70,12 @@ module ApiQueryProvider
       if self == ApiQueryProvider::Base
         throw "this class should never be instanciated directly"
       end
+      
+      @provided_symbols = []
     
       data.each do |key, value|
+        @provided_symbols << key
+      
         key = self.class.shadow key
       
         if !self.respond_to? key.to_sym
@@ -84,6 +94,31 @@ module ApiQueryProvider
         
         self.send("#{key}=".to_sym, value)
       end
+    end
+    
+    def extend
+      if !(self.class.required_symbols - @provided_values).empty?
+        throw "not all needed values are present"
+      end
+      
+      request = self.class
+      
+      self.class.required_symbols.each do |sym|
+        request = request.where(sym => self.send(self.class.shadow(sym).to_sym))
+      end
+      
+      response = request.execute
+      
+      if response.count != 1
+        throw "the request did not return exactly one element"
+      end
+      
+      response = response.first
+      
+      response.provided_symbols do |sym|
+        self.send("#{self.class.shadow(sym)}=".to_sym, response.send("#{self.class.shadow(sym)}"))
+      end    
+      
     end
     
     def self.interface
