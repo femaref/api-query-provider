@@ -52,14 +52,14 @@ module ApiQueryProvider
       used_keys = []
       
       @where_constraints.each do |key, value|
-        replaced_path.gsub! /:#{key}/, value.to_s
-        
-        used_keys << key
+        if replaced_path.gsub! /:#{key}/, value.to_s
+          used_keys << key
+        end
       end
       
       @where_constraints.reject! { |key, value| used_keys.include? key }
       
-      replaced_path.gsub! /:where/, @where_constraints.to_a.map { |e| e.join("=") }.join(",")
+      replaced_path.gsub! /:where/, @where_constraints.to_a.map { |e| e.join("=") }.join("&")
       replaced_path.gsub! /:select/, @select_fields.join(",")
       replaced_path.gsub! /:limit/, @count_constraint.to_s
       
