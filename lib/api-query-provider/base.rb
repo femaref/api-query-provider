@@ -5,6 +5,9 @@ module ApiQueryProvider
   # +data_selector+: if the data is wrapped in an object, you can define a +Proc+ taking
   # the parsed response as Hash and returning a portion of that Hash for further parsing
   # the keys are +String+s.
+  # Be aware that if the data contains any fields named like a ruby internal method or field,
+  # it will be shadowed if you define it explicitly, it autogeneration is enabled, the name will
+  # have a underscore appended.
   class Base
   
     def self.api_url
@@ -38,6 +41,21 @@ module ApiQueryProvider
     def self.autogenerate= (value)
       @autogenerate = value
     end
+    
+    def self.custom(field, &block)
+      @customs ||= []
+      
+      @customs[field.to_sym] = block.to_proc
+    end
+    
+    def self.customs
+      @customs || []
+    end
+    
+    def self.shadow(key)
+      key.to_sym == :class ? "class_".to_sym : key
+    end
+    
      
     # basic parsing constructor
     # takes the json data and tries to assign it to +attr_accessor+ methods
@@ -48,9 +66,7 @@ module ApiQueryProvider
       end
     
       data.each do |key, value|
-        if key.to_sym == :class
-          key = "class_"
-        end
+        key = self.class.shadow key
       
         if !self.respond_to? key.to_sym
           if self.class.autogenerate
@@ -62,6 +78,9 @@ module ApiQueryProvider
           end
         end
 
+        if self.class.customs.include? key.to_sym
+          value = self.class.customs[key.to_sym].call(value)
+        end
         
         self.send("#{key}=".to_sym, value)
       end
