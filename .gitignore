@@ -54,3 +54,4 @@ pkg
 
 .rvmrc
 .rspec
+*.orig
