@@ -1,5 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/github_commits')
+require 'spec_helper'
+require 'lib/github_commits'
 
 describe "github commit api" do
   it "should construct a valid object" do

@@ -1,5 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/test_class')
+require 'spec_helper'
+require 'lib/test_class'
 
 describe "ApiQueryProvider::Provider" do
   it "should save the base class" do

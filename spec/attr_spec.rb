@@ -1,6 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/test_class')
-require File.expand_path(File.dirname(__FILE__) + '/github_commits')
+require 'spec_helper'
+require 'lib/test_class'
+require 'lib/github_commits'
 
 describe "ApiQueryProvider::Provider" do
   it "should not replace api_url and api_path of two classes" do
