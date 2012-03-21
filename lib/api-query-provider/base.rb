@@ -26,7 +26,7 @@ module ApiQueryProvider
       @api_path = value
     end
     
-    def self.required_values
+    def self.required_symbols
       @api_path.scan(/:(\w+)/).flatten.map { |e| e.to_sym } - ApiQueryProvider::Provider.system_symbols
     end
     
@@ -47,13 +47,13 @@ module ApiQueryProvider
     end
     
     def self.custom_field(field, &block)
-      @custom_fields ||= []
+      @custom_fields ||= {}
       
       @custom_fields[field.to_sym] = block.to_proc
     end
     
     def self.custom_fields
-      @custom_fields || []
+      @custom_fields || {}
     end
     
     def self.shadow(key)
@@ -67,15 +67,15 @@ module ApiQueryProvider
     # takes the json data and tries to assign it to +attr_accessor+ methods
     # make sure to define them for any field present in the response
     def initialize(data)
-      if self == ApiQueryProvider::Base
-        throw "this class should never be instanciated directly"
+      if self.class == ApiQueryProvider::Base
+        raise "this class should never be instanciated directly"
       end
       
       @provided_symbols = []
     
       data.each do |key, value|
-        @provided_symbols << key
-      
+        @provided_symbols << key.to_sym
+             
         key = self.class.shadow key
       
         if !self.respond_to? key.to_sym
@@ -113,14 +113,7 @@ module ApiQueryProvider
         throw "the request did not return exactly one element"
       end
       
-      response = response.first
-      
-      response.provided_symbols do |sym|
-        shadow = self.class.shadow(sym)
-      
-        self.send("#{shadow}=".to_sym, response.send("#{shadow}"))
-      end    
-      
+      response.first 
     end
     
     def self.interface
