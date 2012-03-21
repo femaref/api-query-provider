@@ -47,7 +47,7 @@ module ApiQueryProvider
     end
     
     def replace_path
-      replaced_path = klass.api_path
+      replaced_path = klass.api_path.dup
       
       used_keys = []
       
