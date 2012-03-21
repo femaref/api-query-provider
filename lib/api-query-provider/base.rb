@@ -84,7 +84,7 @@ module ApiQueryProvider
               attr_accessor key.to_sym
             end
           else
-            throw "field not found: #{key}. Either enable auto generation or add attr_accessor :#{key}"
+            raise "field not found: #{key}. Either enable auto generation or add attr_accessor :#{key}"
           end
         end
 
@@ -97,8 +97,8 @@ module ApiQueryProvider
     end
     
     def extend
-      if !(self.class.required_symbols - @provided_values).empty?
-        throw "not all needed values are present"
+      if !(self.class.required_symbols - provided_symbols).empty?
+        raise "not all needed values are present"
       end
       
       request = self.class
@@ -110,7 +110,7 @@ module ApiQueryProvider
       response = request.execute
       
       if response.count != 1
-        throw "the request did not return exactly one element"
+        raise "the request did not return exactly one element"
       end
       
       response.first 

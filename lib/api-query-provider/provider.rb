@@ -64,7 +64,7 @@ module ApiQueryProvider
       replaced_path.gsub! /:limit/, @count_constraint.to_s
       
       if replaced_path.include?(":")
-        throw "you didn't replace all fields in the api_path"
+        raise "you didn't replace all fields in the api_path"
       end
       
       replaced_path
@@ -74,7 +74,7 @@ module ApiQueryProvider
       begin
         uri = URI.join(klass.api_url, self.replace_path)
       rescue
-        throw "invalid uri"
+        raise "invalid uri"
       end
       
       HTTParty.get(uri.to_s)
