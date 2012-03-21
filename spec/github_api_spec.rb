@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'lib/github_commits'
+require 'lib/github_user'
 
 describe "github commit api" do
   it "should construct a valid object" do

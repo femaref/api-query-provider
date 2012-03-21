@@ -3,7 +3,7 @@ require 'lib/auto_generate_test_class'
 
 describe ApiQueryProvider::Base do
   it "should raise an exception being instanciated directly" do
-    lambda { real = ApiQueryProvider::Base({}) }.should raise_error
+    lambda { real = ApiQueryProvider::Base.new({}) }.should raise_error(Exception, "this class should never be instanciated directly")
   end
   
   it "should not be manipulated if a deriving class is manipulated" do

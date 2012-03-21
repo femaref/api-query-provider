@@ -15,4 +15,15 @@ describe TestClass do
   it "should raise exception encountering a non existant field" do
     lambda { real = TestClass.new({:foo => :bar}) }.should raise_error 
   end
+  
+  # TODO move to own test
+  it "should return :id as required symbol" do
+    TestClass.required_symbols.should == [ :id ]
+  end
+  
+  # TODO move to own test
+  it "should raise on non-replaced mandatory field" do
+    lambda { TestClass.where().replace_path }.should raise_error(Exception, "you didn't replace all fields in the api_path")
+  end
+  
 end

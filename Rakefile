@@ -33,6 +33,11 @@ end
 
 task :default => :test
 
+task :simplecov do
+  ENV['COVERAGE'] = "true"
+  Rake::Task[:spec].execute
+end
+
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
