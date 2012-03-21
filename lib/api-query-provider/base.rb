@@ -39,7 +39,11 @@ module ApiQueryProvider
     end
     
     def self.autogenerate
-      @autogenerate || false
+      if @autogenerate.nil?
+        false
+      else
+        @autogenerate
+      end
     end
     
     def self.autogenerate= (value)
