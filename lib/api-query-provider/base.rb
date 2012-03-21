@@ -120,6 +120,19 @@ module ApiQueryProvider
       response.first 
     end
     
+    def extend!
+      local = self.extend
+      
+      local.provided_symbols.each do |symbol|
+        shadow = self.class.shadow(symbol).to_sym
+        self.send("#{shadow}=".to_sym, local.send("#{shadow}".to_sym))
+      end
+      
+      @provided_symbols = local.provided_symbols
+      
+      self
+    end
+    
     def self.interface
       ApiQueryProvider::Provider.new(self)
     end
