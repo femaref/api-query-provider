@@ -105,7 +105,7 @@ module ApiQueryProvider
         raise "not all needed values are present"
       end
       
-      request = self.class
+      request = self.class.where
       
       self.class.required_symbols.each do |sym|
         request = request.where(sym => self.send(self.class.shadow(sym).to_sym))
