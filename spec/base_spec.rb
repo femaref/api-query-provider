@@ -28,4 +28,16 @@ describe ApiQueryProvider::Base do
       lambda { real.extend }.should_not raise_error
     end
   end
+  
+  describe "extend!" do
+    it "should copy additional fields to the current object" do
+      HTTParty.stub(:get) { double(:body => %q({ "id" : "1", "name": "test" })) }
+      
+      real = AutoGenerateTestClass.new({:id => 1})
+      
+      real.extend!
+      
+      real.name.should == "test"
+    end
+  end
 end
