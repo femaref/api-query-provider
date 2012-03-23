@@ -31,7 +31,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-task :default => :rspec
+task :default => :spec
 
 task :simplecov do
   ENV['COVERAGE'] = "true"
