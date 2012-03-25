@@ -133,6 +133,16 @@ module ApiQueryProvider
       self
     end
     
+    def self.new
+      @derived = []
+    end
+    
+    def self.inherited(subclass)
+      @derived << subclass
+    end
+    
+    
+    
     def self.interface
       ApiQueryProvider::Provider.new(self)
     end
