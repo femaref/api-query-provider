@@ -3,4 +3,5 @@ require "uri"
 require "json"
 
 require "api-query-provider/provider"
+require "api-query-provider/object"
 require "api-query-provider/base"

@@ -8,7 +8,7 @@ module ApiQueryProvider
   # Be aware that if the data contains any fields named like a ruby internal method or field,
   # it will be shadowed if you define it explicitly, it autogeneration is enabled, the name will
   # have a underscore appended.
-  class Base
+  class Base < Object
   
     def self.api_url
       @api_url
@@ -30,41 +30,17 @@ module ApiQueryProvider
       @api_path.scan(/:(\w+)/).flatten.map { |e| e.to_sym } - ApiQueryProvider::Provider.system_symbols
     end
     
-    def self.data_selector
-      @data_selector || Proc.new { |e| e }
-    end
+
     
-    def self.data_selector= (value)
-      @data_selector = value
-    end
+
     
-    def self.autogenerate
-      if @autogenerate.nil?
-        false
-      else
-        @autogenerate
-      end
-    end
+
     
-    def self.autogenerate= (value)
-      @autogenerate = value
-    end
+
     
-    def self.custom_field(field, &block)
-      @custom_fields ||= {}
-      
-      @custom_fields[field.to_sym] = block.to_proc
-    end
+
     
-    def self.custom_fields
-      @custom_fields || {}
-    end
     
-    def self.shadow(key)
-      key.to_sym == :class ? "class_".to_sym : key
-    end
-    
-    attr_reader :provided_symbols
     
      
     # basic parsing constructor
@@ -75,29 +51,7 @@ module ApiQueryProvider
         raise "this class should never be instanciated directly"
       end
       
-      @provided_symbols = []
-    
-      data.each do |key, value|
-        @provided_symbols << key.to_sym
-             
-        key = self.class.shadow key
-      
-        if !self.respond_to? key.to_sym
-          if self.class.autogenerate
-            self.class.class_eval do
-              attr_accessor key.to_sym
-            end
-          else
-            raise "field not found: #{key}. Either enable auto generation or add attr_accessor :#{key}"
-          end
-        end
-
-        if self.class.custom_fields.include? key.to_sym
-          value = self.class.custom_fields[key.to_sym].call(value)
-        end
-        
-        self.send("#{key}=".to_sym, value)
-      end
+      super data
     end
     
     def extend
@@ -132,17 +86,7 @@ module ApiQueryProvider
       
       self
     end
-    
-    def self.new
-      @derived = []
-    end
-    
-    def self.inherited(subclass)
-      @derived << subclass
-    end
-    
-    
-    
+      
     def self.interface
       ApiQueryProvider::Provider.new(self)
     end
