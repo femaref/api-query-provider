@@ -10,42 +10,30 @@ module ApiQueryProvider
   # have a underscore appended.
   class Base < Object
   
-    def self.api_url
-      @api_url
+    def self.api_for (opt = {})
+      @settings = opt
+      
+      if !@settings.has_key? :api_url
+        raise "you need to define a api_url in #{self.class.name}"
+      end
+      
+      if !@settings.has_key? :api_path
+        raise "you need to define a api_path in #{self.class.name}"
+      end
     end
     
-    def self.api_url= (value)
-      @api_url = value
+    def self.api_url
+      @settings[:api_url]
     end
     
     def self.api_path
-      @api_path
+      @settings[:api_path]
     end
-    
-    def self.api_path= (value)
-      @api_path = value
-    end
-    
+      
     def self.required_symbols
-      @api_path.scan(/:(\w+)/).flatten.map { |e| e.to_sym } - ApiQueryProvider::Provider.system_symbols
+      @settings[:api_path].scan(/:(\w+)/).flatten.map { |e| e.to_sym } - ApiQueryProvider::Provider.system_symbols
     end
     
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-     
-    # basic parsing constructor
-    # takes the json data and tries to assign it to +attr_accessor+ methods
-    # make sure to define them for any field present in the response
     def initialize(data)
       if self.class == ApiQueryProvider::Base
         raise "this class should never be instanciated directly"
