@@ -1,5 +1,5 @@
 class OptionalWhereTestClass < ApiQueryProvider::Base
 
-  self.api_url = "example.com"
-  self.api_path = "/foo/?:where"
+  api_for :api_url => "example.com",
+          :api_path => "/foo/?:where"
 end
