@@ -131,17 +131,7 @@ module ApiQueryProvider
       @provided_symbols = local.provided_symbols
       
       self
-    end
-    
-    def self.new
-      @derived = []
-    end
-    
-    def self.inherited(subclass)
-      @derived << subclass
-    end
-    
-    
+    end   
     
     def self.interface
       ApiQueryProvider::Provider.new(self)
