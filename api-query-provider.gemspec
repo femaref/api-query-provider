@@ -9,30 +9,41 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Femaref"]
-  s.date = "2012-03-18"
+  s.date = "2012-04-21"
   s.description = "Provides an easy interface to arbitrary json apis"
   s.email = "femaref@googlemail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.rdoc",
+    "TODO"
   ]
   s.files = [
     ".document",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
+    "TODO",
     "VERSION",
+    "api-query-provider.gemspec",
     "lib/api-query-provider.rb",
     "lib/api-query-provider/base.rb",
     "lib/api-query-provider/provider.rb",
     "spec/attr_spec.rb",
+    "spec/autogeneration_spec.rb",
+    "spec/base_spec.rb",
     "spec/constructor_spec.rb",
     "spec/github_api_spec.rb",
-    "spec/github_commits.rb",
+    "spec/lib/auto_generate_test_class.rb",
+    "spec/lib/github_commits.rb",
+    "spec/lib/github_user.rb",
+    "spec/lib/optional_where_test_class.rb",
+    "spec/lib/parameterless_auto_generate_test_class.rb",
+    "spec/lib/test_class.rb",
+    "spec/provider_spec.rb",
     "spec/spec_helper.rb",
-    "spec/test_class.rb",
     "spec/where_spec.rb"
   ]
   s.homepage = "http://github.com/Femaref/api-query-provider"
