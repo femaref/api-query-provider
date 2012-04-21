@@ -3,6 +3,10 @@
 This gem provides an interface to an arbitrary json api. It provides ActiveRecord-like methods,
 which can be chained together.
 
+== Disclaimer
+
+This is work on progress, I can't and won't guarantee a stable master branch.
+
 == Copyright
 
 Copyright (c) 2012 Femaref. See LICENSE.txt for
